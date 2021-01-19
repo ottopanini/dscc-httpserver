@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Executors;
 
@@ -102,8 +103,8 @@ public class WebServer {
         long finishTime = System.nanoTime();
 
         if (isDebugMode) {
-          String debugMessage = String.format("Operation took %d ns%n", finishTime - startTime);
-          exchange.getResponseHeaders().put("X-Debug_Info", Collections.singletonList(debugMessage));
+          String debugMessage = String.format("Operation took %d ns", finishTime - startTime);
+          exchange.getResponseHeaders().set("X-Debug-Info", debugMessage);
         }
 
         sendResponse(responseBytes, exchange);
@@ -120,7 +121,7 @@ public class WebServer {
             result = result.multiply(number);
         }
 
-        return String.format("Result of the calculation: %s\n", result).getBytes();
+        return String.format("Result of the calculation: %s%n", result).getBytes();
     }
 
     private void handleStatusCheckRequest(HttpExchange exchange) throws IOException {
